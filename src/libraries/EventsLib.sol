@@ -38,67 +38,42 @@ library EventsLib {
     /// @dev Warning: `feeRecipient` receives some shares during interest accrual without any supply event emitted.
     /// @param id The market id.
     /// @param caller The caller.
-    /// @param onBehalf The owner of the modified position.
     /// @param assets The amount of assets supplied.
     /// @param shares The amount of shares minted.
-    event Supply(Id indexed id, address indexed caller, address indexed onBehalf, uint256 assets, uint256 shares);
+    event Supply(Id indexed id, address indexed caller, uint256 assets, uint256 shares);
 
     /// @notice Emitted on withdrawal of assets.
     /// @param id The market id.
-    /// @param caller The caller.
-    /// @param onBehalf The owner of the modified position.
-    /// @param receiver The address that received the withdrawn assets.
+    /// @param caller The caller / receiver
     /// @param assets The amount of assets withdrawn.
     /// @param shares The amount of shares burned.
-    event Withdraw(
-        Id indexed id,
-        address caller,
-        address indexed onBehalf,
-        address indexed receiver,
-        uint256 assets,
-        uint256 shares
-    );
+    event Withdraw(Id indexed id, address caller, uint256 assets, uint256 shares);
 
     /// @notice Emitted on borrow of assets.
     /// @param id The market id.
-    /// @param caller The caller.
-    /// @param onBehalf The owner of the modified position.
-    /// @param receiver The address that received the borrowed assets.
+    /// @param caller The caller / receiver
     /// @param assets The amount of assets borrowed.
     /// @param shares The amount of shares minted.
-    event Borrow(
-        Id indexed id,
-        address caller,
-        address indexed onBehalf,
-        address indexed receiver,
-        uint256 assets,
-        uint256 shares
-    );
+    event Borrow(Id indexed id, address caller, uint256 assets, uint256 shares);
 
     /// @notice Emitted on repayment of assets.
     /// @param id The market id.
-    /// @param caller The caller.
-    /// @param onBehalf The owner of the modified position.
+    /// @param caller The caller / payer
     /// @param assets The amount of assets repaid. May be 1 over the corresponding market's `totalBorrowAssets`.
     /// @param shares The amount of shares burned.
-    event Repay(Id indexed id, address indexed caller, address indexed onBehalf, uint256 assets, uint256 shares);
+    event Repay(Id indexed id, address indexed caller, uint256 assets, uint256 shares);
 
     /// @notice Emitted on supply of collateral.
     /// @param id The market id.
-    /// @param caller The caller.
-    /// @param onBehalf The owner of the modified position.
+    /// @param caller The caller / supplier
     /// @param assets The amount of collateral supplied.
-    event SupplyCollateral(Id indexed id, address indexed caller, address indexed onBehalf, uint256 assets);
+    event SupplyCollateral(Id indexed id, address indexed caller, uint256 assets);
 
     /// @notice Emitted on withdrawal of collateral.
     /// @param id The market id.
-    /// @param caller The caller.
-    /// @param onBehalf The owner of the modified position.
-    /// @param receiver The address that received the withdrawn collateral.
+    /// @param caller The caller / receiver
     /// @param assets The amount of collateral withdrawn.
-    event WithdrawCollateral(
-        Id indexed id, address caller, address indexed onBehalf, address indexed receiver, uint256 assets
-    );
+    event WithdrawCollateral(Id indexed id, address caller, uint256 assets);
 
     /// @notice Emitted on liquidation of a position.
     /// @param id The market id.
@@ -124,22 +99,22 @@ library EventsLib {
     /// @param caller The caller.
     /// @param token The token that was flash loaned.
     /// @param assets The amount that was flash loaned.
-    event FlashLoan(address indexed caller, address indexed token, uint256 assets);
+    // event FlashLoan(address indexed caller, address indexed token, uint256 assets);
 
     /// @notice Emitted when setting an authorization.
     /// @param caller The caller.
     /// @param authorizer The authorizer address.
     /// @param authorized The authorized address.
     /// @param newIsAuthorized The new authorization status.
-    event SetAuthorization(
-        address indexed caller, address indexed authorizer, address indexed authorized, bool newIsAuthorized
-    );
+    // event SetAuthorization(
+    // address indexed caller, address indexed authorizer, address indexed authorized, bool newIsAuthorized
+    // );
 
     /// @notice Emitted when setting an authorization with a signature.
     /// @param caller The caller.
     /// @param authorizer The authorizer address.
     /// @param usedNonce The nonce that was used.
-    event IncrementNonce(address indexed caller, address indexed authorizer, uint256 usedNonce);
+    // event IncrementNonce(address indexed caller, address indexed authorizer, uint256 usedNonce);
 
     /// @notice Emitted when accruing interest.
     /// @param id The market id.

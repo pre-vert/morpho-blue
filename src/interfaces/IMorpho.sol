@@ -32,19 +32,19 @@ struct Market {
     uint128 fee;
 }
 
-struct Authorization {
-    address authorizer;
-    address authorized;
-    bool isAuthorized;
-    uint256 nonce;
-    uint256 deadline;
-}
+// struct Authorization {
+//     address authorizer;
+//     address authorized;
+//     bool isAuthorized;
+//     uint256 nonce;
+//     uint256 deadline;
+// }
 
-struct Signature {
-    uint8 v;
-    bytes32 r;
-    bytes32 s;
-}
+// struct Signature {
+//     uint8 v;
+//     bytes32 r;
+//     bytes32 s;
+// }
 
 /// @dev This interface is used for factorizing IMorphoStaticTyping and IMorpho.
 /// @dev Consider using the IMorpho interface instead of this one.
@@ -52,7 +52,7 @@ interface IMorphoBase {
     /// @notice The EIP-712 domain separator.
     /// @dev Warning: Every EIP-712 signed message based on this domain separator can be reused on another chain sharing
     /// the same chain id because the domain separator would be the same.
-    function DOMAIN_SEPARATOR() external view returns (bytes32);
+    // function DOMAIN_SEPARATOR() external view returns (bytes32);
 
     /// @notice The owner of the contract.
     /// @dev It has the power to change the owner.
@@ -72,10 +72,10 @@ interface IMorphoBase {
 
     /// @notice Whether `authorized` is authorized to modify `authorizer`'s position on all markets.
     /// @dev Anyone is authorized to modify their own positions, regardless of this variable.
-    function isAuthorized(address authorizer, address authorized) external view returns (bool);
+    // function isAuthorized(address authorizer, address authorized) external view returns (bool);
 
     /// @notice The `authorizer`'s current nonce. Used to prevent replay attacks with EIP-712 signatures.
-    function nonce(address authorizer) external view returns (uint256);
+    // function nonce(address authorizer) external view returns (uint256);
 
     /// @notice Sets `newOwner` as `owner` of the contract.
     /// @dev Warning: No two-step transfer ownership.
@@ -139,17 +139,11 @@ interface IMorphoBase {
     /// @param marketParams The market to supply assets to.
     /// @param assets The amount of assets to supply.
     /// @param shares The amount of shares to mint.
-    /// @param onBehalf The address that will own the increased supply position.
-    /// @param data Arbitrary data to pass to the `onMorphoSupply` callback. Pass empty data if not needed.
     /// @return assetsSupplied The amount of assets supplied.
     /// @return sharesSupplied The amount of shares minted.
-    function supply(
-        MarketParams memory marketParams,
-        uint256 assets,
-        uint256 shares,
-        address onBehalf,
-        bytes memory data
-    ) external returns (uint256 assetsSupplied, uint256 sharesSupplied);
+    function supply(MarketParams memory marketParams, uint256 assets, uint256 shares)
+        external
+        returns (uint256 assetsSupplied, uint256 sharesSupplied);
 
     /// @notice Withdraws `assets` or `shares` on behalf of `onBehalf` and sends the assets to `receiver`.
     /// @dev Either `assets` or `shares` should be zero. To withdraw max, pass the `shares`'s balance of `onBehalf`.
@@ -160,17 +154,11 @@ interface IMorphoBase {
     /// @param marketParams The market to withdraw assets from.
     /// @param assets The amount of assets to withdraw.
     /// @param shares The amount of shares to burn.
-    /// @param onBehalf The address of the owner of the supply position.
-    /// @param receiver The address that will receive the withdrawn assets.
     /// @return assetsWithdrawn The amount of assets withdrawn.
     /// @return sharesWithdrawn The amount of shares burned.
-    function withdraw(
-        MarketParams memory marketParams,
-        uint256 assets,
-        uint256 shares,
-        address onBehalf,
-        address receiver
-    ) external returns (uint256 assetsWithdrawn, uint256 sharesWithdrawn);
+    function withdraw(MarketParams memory marketParams, uint256 assets, uint256 shares)
+        external
+        returns (uint256 assetsWithdrawn, uint256 sharesWithdrawn);
 
     /// @notice Borrows `assets` or `shares` on behalf of `onBehalf` and sends the assets to `receiver`.
     /// @dev Either `assets` or `shares` should be zero. Most use cases should rely on `assets` as an input so the
@@ -183,17 +171,11 @@ interface IMorphoBase {
     /// @param marketParams The market to borrow assets from.
     /// @param assets The amount of assets to borrow.
     /// @param shares The amount of shares to mint.
-    /// @param onBehalf The address that will own the increased borrow position.
-    /// @param receiver The address that will receive the borrowed assets.
     /// @return assetsBorrowed The amount of assets borrowed.
     /// @return sharesBorrowed The amount of shares minted.
-    function borrow(
-        MarketParams memory marketParams,
-        uint256 assets,
-        uint256 shares,
-        address onBehalf,
-        address receiver
-    ) external returns (uint256 assetsBorrowed, uint256 sharesBorrowed);
+    function borrow(MarketParams memory marketParams, uint256 assets, uint256 shares)
+        external
+        returns (uint256 assetsBorrowed, uint256 sharesBorrowed);
 
     /// @notice Repays `assets` or `shares` on behalf of `onBehalf`, optionally calling back the caller's
     /// `onMorphoRepay` function with the given `data`.
@@ -205,17 +187,11 @@ interface IMorphoBase {
     /// @param marketParams The market to repay assets to.
     /// @param assets The amount of assets to repay.
     /// @param shares The amount of shares to burn.
-    /// @param onBehalf The address of the owner of the debt position.
-    /// @param data Arbitrary data to pass to the `onMorphoRepay` callback. Pass empty data if not needed.
     /// @return assetsRepaid The amount of assets repaid.
     /// @return sharesRepaid The amount of shares burned.
-    function repay(
-        MarketParams memory marketParams,
-        uint256 assets,
-        uint256 shares,
-        address onBehalf,
-        bytes memory data
-    ) external returns (uint256 assetsRepaid, uint256 sharesRepaid);
+    function repay(MarketParams memory marketParams, uint256 assets, uint256 shares)
+        external
+        returns (uint256 assetsRepaid, uint256 sharesRepaid);
 
     /// @notice Supplies `assets` of collateral on behalf of `onBehalf`, optionally calling back the caller's
     /// `onMorphoSupplyCollateral` function with the given `data`.
@@ -223,20 +199,14 @@ interface IMorphoBase {
     /// @dev Supplying a large amount can revert for overflow.
     /// @param marketParams The market to supply collateral to.
     /// @param assets The amount of collateral to supply.
-    /// @param onBehalf The address that will own the increased collateral position.
-    /// @param data Arbitrary data to pass to the `onMorphoSupplyCollateral` callback. Pass empty data if not needed.
-    function supplyCollateral(MarketParams memory marketParams, uint256 assets, address onBehalf, bytes memory data)
-        external;
+    function supplyCollateral(MarketParams memory marketParams, uint256 assets) external;
 
     /// @notice Withdraws `assets` of collateral on behalf of `onBehalf` and sends the assets to `receiver`.
     /// @dev `msg.sender` must be authorized to manage `onBehalf`'s positions.
     /// @dev Withdrawing an amount corresponding to more collateral than supplied will revert for underflow.
     /// @param marketParams The market to withdraw collateral from.
     /// @param assets The amount of collateral to withdraw.
-    /// @param onBehalf The address of the owner of the collateral position.
-    /// @param receiver The address that will receive the collateral assets.
-    function withdrawCollateral(MarketParams memory marketParams, uint256 assets, address onBehalf, address receiver)
-        external;
+    function withdrawCollateral(MarketParams memory marketParams, uint256 assets) external;
 
     /// @notice Liquidates the given `repaidShares` of debt asset or seize the given `seizedAssets` of collateral on the
     /// given market `marketParams` of the given `borrower`'s position, optionally calling back the caller's
@@ -249,41 +219,11 @@ interface IMorphoBase {
     /// @param borrower The owner of the position.
     /// @param seizedAssets The amount of collateral to seize.
     /// @param repaidShares The amount of shares to repay.
-    /// @param data Arbitrary data to pass to the `onMorphoLiquidate` callback. Pass empty data if not needed.
     /// @return The amount of assets seized.
     /// @return The amount of assets repaid.
-    function liquidate(
-        MarketParams memory marketParams,
-        address borrower,
-        uint256 seizedAssets,
-        uint256 repaidShares,
-        bytes memory data
-    ) external returns (uint256, uint256);
-
-    /// @notice Executes a flash loan.
-    /// @dev Flash loans have access to the whole balance of the contract (the liquidity and deposited collateral of all
-    /// markets combined, plus donations).
-    /// @dev Warning: Not ERC-3156 compliant but compatibility is easily reached:
-    /// - `flashFee` is zero.
-    /// - `maxFlashLoan` is the token's balance of this contract.
-    /// - The receiver of `assets` is the caller.
-    /// @param token The token to flash loan.
-    /// @param assets The amount of assets to flash loan.
-    /// @param data Arbitrary data to pass to the `onMorphoFlashLoan` callback.
-    function flashLoan(address token, uint256 assets, bytes calldata data) external;
-
-    /// @notice Sets the authorization for `authorized` to manage `msg.sender`'s positions.
-    /// @param authorized The authorized address.
-    /// @param newIsAuthorized The new authorization status.
-    function setAuthorization(address authorized, bool newIsAuthorized) external;
-
-    /// @notice Sets the authorization for `authorization.authorized` to manage `authorization.authorizer`'s positions.
-    /// @dev Warning: Reverts if the signature has already been submitted.
-    /// @dev The signature is malleable, but it has no impact on the security here.
-    /// @dev The nonce is passed as argument to be able to revert with a different error message.
-    /// @param authorization The `Authorization` struct.
-    /// @param signature The signature.
-    function setAuthorizationWithSig(Authorization calldata authorization, Signature calldata signature) external;
+    function liquidate(MarketParams memory marketParams, address borrower, uint256 seizedAssets, uint256 repaidShares)
+        external
+        returns (uint256, uint256);
 
     /// @notice Accrues interest for the given market `marketParams`.
     function accrueInterest(MarketParams memory marketParams) external;

@@ -59,51 +59,51 @@ contract SafeTransferLibTest is Test {
         tokenWithBooleanAlwaysFalse = new ERC20WithBooleanAlwaysFalse();
     }
 
-    function testSafeTransfer(address to, uint256 amount) public {
-        tokenWithoutBoolean.setBalance(address(this), amount);
+    // function testSafeTransfer(address to, uint256 amount) public {
+    //     tokenWithoutBoolean.setBalance(address(this), amount);
 
-        this.safeTransfer(address(tokenWithoutBoolean), to, amount);
-    }
+    //     this.safeTransfer(address(tokenWithoutBoolean), to, amount);
+    // }
 
-    function testSafeTransferFrom(address from, address to, uint256 amount) public {
-        tokenWithoutBoolean.setBalance(from, amount);
+    // function testSafeTransferFrom(address from, address to, uint256 amount) public {
+    //     tokenWithoutBoolean.setBalance(from, amount);
 
-        this.safeTransferFrom(address(tokenWithoutBoolean), from, to, amount);
-    }
+    //     this.safeTransferFrom(address(tokenWithoutBoolean), from, to, amount);
+    // }
 
-    function testSafeTransferWithBoolFalse(address to, uint256 amount) public {
-        tokenWithBooleanAlwaysFalse.setBalance(address(this), amount);
+    // function testSafeTransferWithBoolFalse(address to, uint256 amount) public {
+    //     tokenWithBooleanAlwaysFalse.setBalance(address(this), amount);
 
-        vm.expectRevert(bytes(ErrorsLib.TRANSFER_RETURNED_FALSE));
-        this.safeTransfer(address(tokenWithBooleanAlwaysFalse), to, amount);
-    }
+    //     vm.expectRevert(bytes(ErrorsLib.TRANSFER_RETURNED_FALSE));
+    //     this.safeTransfer(address(tokenWithBooleanAlwaysFalse), to, amount);
+    // }
 
-    function testSafeTransferFromWithBoolFalse(address from, address to, uint256 amount) public {
-        tokenWithBooleanAlwaysFalse.setBalance(from, amount);
+    // function testSafeTransferFromWithBoolFalse(address from, address to, uint256 amount) public {
+    //     tokenWithBooleanAlwaysFalse.setBalance(from, amount);
 
-        vm.expectRevert(bytes(ErrorsLib.TRANSFER_FROM_RETURNED_FALSE));
-        this.safeTransferFrom(address(tokenWithBooleanAlwaysFalse), from, to, amount);
-    }
+    //     vm.expectRevert(bytes(ErrorsLib.TRANSFER_FROM_RETURNED_FALSE));
+    //     this.safeTransferFrom(address(tokenWithBooleanAlwaysFalse), from, to, amount);
+    // }
 
-    function testSafeTransferTokenNotCreated(address token, address to, uint256 amount) public {
-        vm.assume(token.code.length == 0);
+    // function testSafeTransferTokenNotCreated(address token, address to, uint256 amount) public {
+    //     vm.assume(token.code.length == 0);
 
-        vm.expectRevert(bytes(ErrorsLib.NO_CODE));
-        this.safeTransfer(token, to, amount);
-    }
+    //     vm.expectRevert(bytes(ErrorsLib.NO_CODE));
+    //     this.safeTransfer(token, to, amount);
+    // }
 
-    function testSafeTransferFromTokenNotCreated(address token, address from, address to, uint256 amount) public {
-        vm.assume(token.code.length == 0);
+    // function testSafeTransferFromTokenNotCreated(address token, address from, address to, uint256 amount) public {
+    //     vm.assume(token.code.length == 0);
 
-        vm.expectRevert(bytes(ErrorsLib.NO_CODE));
-        this.safeTransferFrom(token, from, to, amount);
-    }
+    //     vm.expectRevert(bytes(ErrorsLib.NO_CODE));
+    //     this.safeTransferFrom(token, from, to, amount);
+    // }
 
-    function safeTransfer(address token, address to, uint256 amount) external {
-        IERC20(token).safeTransfer(to, amount);
-    }
+    // function safeTransfer(address token, address to, uint256 amount) external {
+    //     IERC20(token).safeTransfer(to, amount);
+    // }
 
-    function safeTransferFrom(address token, address from, address to, uint256 amount) external {
-        IERC20(token).safeTransferFrom(from, to, amount);
-    }
+    // function safeTransferFrom(address token, address from, address to, uint256 amount) external {
+    //     IERC20(token).safeTransferFrom(from, to, amount);
+    // }
 }

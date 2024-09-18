@@ -12,7 +12,7 @@ import {OracleMock} from "../../src/mocks/OracleMock.sol";
 
 import "../../src/Morpho.sol";
 import {Math} from "./helpers/Math.sol";
-import {SigUtils} from "./helpers/SigUtils.sol";
+// import {SigUtils} from "./helpers/SigUtils.sol";
 import {ArrayLib} from "./helpers/ArrayLib.sol";
 import {MorphoLib} from "../../src/libraries/periphery/MorphoLib.sol";
 import {MorphoBalancesLib} from "../../src/libraries/periphery/MorphoBalancesLib.sol";
@@ -110,7 +110,7 @@ contract BaseTest is Test {
         vm.startPrank(ONBEHALF);
         loanToken.approve(address(morpho), type(uint256).max);
         collateralToken.approve(address(morpho), type(uint256).max);
-        morpho.setAuthorization(BORROWER, true);
+        // morpho.setAuthorization(BORROWER, true);
         vm.stopPrank();
 
         _setLltv(DEFAULT_TEST_LLTV);
@@ -141,14 +141,15 @@ contract BaseTest is Test {
 
     function _supply(uint256 amount) internal {
         loanToken.setBalance(address(this), amount);
-        morpho.supply(marketParams, amount, 0, address(this), hex"");
+        vm.startPrank(address(this));
+        morpho.supply(marketParams, amount, 0);
     }
 
     function _supplyCollateralForBorrower(address borrower) internal {
         collateralToken.setBalance(borrower, HIGH_COLLATERAL_AMOUNT);
         vm.startPrank(borrower);
         collateralToken.approve(address(morpho), type(uint256).max);
-        morpho.supplyCollateral(marketParams, HIGH_COLLATERAL_AMOUNT, borrower, hex"");
+        morpho.supplyCollateral(marketParams, HIGH_COLLATERAL_AMOUNT);
         vm.stopPrank();
     }
 
